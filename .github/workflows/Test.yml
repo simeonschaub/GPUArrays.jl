@@ -56,11 +56,6 @@ jobs:
                     devdir = mktempdir()
                     package = joinpath(devdir, "OpenCL")
 
-                    println("--- :julia: Installing TestEnv")
-                    Pkg.activate(; temp=true)
-                    Pkg.add("TestEnv")
-                    using TestEnv
-
                     println("--- :julia: Installing OpenCL.jl")
                     withenv("JULIA_PKG_PRECOMPILE_AUTO" => 0,
                             "JULIA_PKG_DEVDIR" => devdir) do
@@ -69,7 +64,8 @@ jobs:
 
                       try
                         Pkg.develop([PackageSpec(path=gpuarrays), PackageSpec(path=gpuarrayscore)])
-                        TestEnv.activate()
+                        Pkg.activate(joinpath(package,"test"))
+                        Pkg.add("JLD2")
                       catch err
                         @error "Could not install OpenCL.jl" exception=(err,catch_backtrace())
                         exit(0)

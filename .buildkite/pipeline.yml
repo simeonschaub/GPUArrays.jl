@@ -13,11 +13,6 @@ steps:
                 devdir = mktempdir()
                 package = joinpath(devdir, "CUDA")
 
-                println("--- :julia: Installing TestEnv")
-                Pkg.activate(; temp=true)
-                Pkg.add("TestEnv")
-                using TestEnv
-
                 println("--- :julia: Installing CUDA.jl")
                 withenv("JULIA_PKG_PRECOMPILE_AUTO" => 0,
                         "JULIA_PKG_DEVDIR" => devdir) do
@@ -26,7 +21,8 @@ steps:
 
                   try
                     Pkg.develop([PackageSpec(path=gpuarrays), PackageSpec(path=gpuarrayscore)])
-                    TestEnv.activate()
+                    Pkg.activate(joinpath(package,"test"))
+                    Pkg.add("JLD2")
                   catch err
                     @error "Could not install CUDA.jl" exception=(err,catch_backtrace())
                     exit(3)
@@ -59,11 +55,6 @@ steps:
                 devdir = mktempdir()
                 package = joinpath(devdir, "oneAPI")
 
-                println("--- :julia: Installing TestEnv")
-                Pkg.activate(; temp=true)
-                Pkg.add("TestEnv")
-                using TestEnv
-
                 println("--- :julia: Installing oneAPI.jl")
                 withenv("JULIA_PKG_PRECOMPILE_AUTO" => 0,
                         "JULIA_PKG_DEVDIR" => devdir) do
@@ -73,7 +64,8 @@ steps:
 
                   try
                     Pkg.develop([PackageSpec(path=gpuarrays), PackageSpec(path=gpuarrayscore)])
-                    TestEnv.activate()
+                    Pkg.activate(joinpath(package,"test"))
+                    Pkg.add("JLD2")
                   catch err
                     @error "Could not install oneAPI.jl" exception=(err,catch_backtrace())
                     exit(3)
@@ -106,11 +98,6 @@ steps:
                 devdir = mktempdir()
                 package = joinpath(devdir, "Metal")
 
-                println("--- :julia: Installing TestEnv")
-                Pkg.activate(; temp=true)
-                Pkg.add("TestEnv")
-                using TestEnv
-
                 println("--- :julia: Installing Metal.jl")
                 withenv("JULIA_PKG_PRECOMPILE_AUTO" => 0,
                         "JULIA_PKG_DEVDIR" => devdir) do
@@ -119,7 +106,8 @@ steps:
 
                   try
                     Pkg.develop([PackageSpec(path=gpuarrays), PackageSpec(path=gpuarrayscore)])
-                    TestEnv.activate()
+                    Pkg.activate(joinpath(package,"test"))
+                    Pkg.add("JLD2")
                   catch err
                     @error "Could not install Metal.jl" exception=(err,catch_backtrace())
                     exit(3)
